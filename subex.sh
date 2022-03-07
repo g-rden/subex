@@ -5,13 +5,15 @@
 #
 
 # show help
-! (: "${*:?}") 2>/dev/null && echo 'Usage: subex [command_string ...]' && exit
+[ ! "$*" ] && echo "Usage: subex [command_string ...]" && exit
 
 startdir="$PWD" # remember where subex was executed
+cmd="$*"        # passed commands
 
-for curdir in $(echo */); do
+IFS='/'
+for curdir in $(printf '%s' */); do
 	cd "$curdir" || { echo "$PWD: can't go to curdir: $curdir"; exit;}
 	echo "$PWD"
-	eval "$*"
+	eval "$cmd"
 	cd "$startdir" || { echo "$PWD: can't go to startdir: $startdir"; exit;}
 done
