@@ -8,12 +8,12 @@
 [ ! "$*" ] && echo "Usage: subex [command_string ...]" && exit
 
 startdir="$PWD" # remember where subex was executed
-cmd="$*"        # passed commands
 
 IFS='/'
+# shellcheck disable=SC2294
 for curdir in $(printf '%s' */); do
-	cd "$curdir" || { echo "$PWD: can't go to curdir: $curdir"; exit;}
+	cd "$curdir" || exit
 	echo "$PWD"
-	eval "$cmd"
-	cd "$startdir" || { echo "$PWD: can't go to startdir: $startdir"; exit;}
+	eval "$@"
+	cd "$startdir" || exit
 done
