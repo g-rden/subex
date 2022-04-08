@@ -10,10 +10,9 @@
 startdir="$PWD" # remember where subex was executed
 
 IFS='/'
-# shellcheck disable=SC2294
 for curdir in $(printf '%s' */); do
 	cd "$curdir" || exit
 	echo "$PWD"
-	eval "$@"
+	"$@"
 	cd "$startdir" || exit
 done
