@@ -14,14 +14,15 @@
 # remember where subex was executed
 startdir="$PWD"
 
-IFS='/'
+IFS=/
 for curdir in "$h"*/; do
-	if [ "$curdir" != ./ ] && [ "$curdir" != ../ ] && [ "$curdir" != '*/' ]; then
+	[ "$curdir" = ./ ] || [ "$curdir" = ../ ] && continue
+	if [ "$curdir" != '*/' ]; then
 		cd -- "$curdir" || exit
 		echo "$PWD"
 		eval "$@"
 		cd -- "$startdir" || exit
 	else
-                echo "No$H files found in $startdir" && exit
+		echo "No$H directories found in $startdir" && exit
 	fi
 done
