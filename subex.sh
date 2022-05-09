@@ -9,19 +9,19 @@
 [ ! "$*" ] && echo "Usage: subex [-h] [command_string ...]" && exit
 
 # hidden directory toggle
-[ "$1" = -h ] && h=. && shift
+[ "$1" = -h ] && h=. H=' hidden' && shift
 
 # remember where subex was executed
 startdir="$PWD"
 
 IFS='/'
 for curdir in "$h"*/; do
-	if [ "$curdir" != ./ ] && [ "$curdir" != ../ ] && [ ! "$curdir" ]; then
+	if [ "$curdir" != ./ ] && [ "$curdir" != ../ ] && [ "$curdir" != '*/' ]; then
 		cd -- "$curdir" || exit
 		echo "$PWD"
 		eval "$@"
 		cd -- "$startdir" || exit
 	else
-                echo "No files found in $PWD" && exit
+                echo "No$H files found in $startdir" && exit
 	fi
 done
